@@ -1,0 +1,4 @@
+Edit index.html, courses.html, categories.html, classes.html and admission.html.
+Inside each page's .navlinks element, add this link near the other navigation links:
+<a href="login.html">Student Login</a>
+This adds a visible entry point without removing any existing navigation.
