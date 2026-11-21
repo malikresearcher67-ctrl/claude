@@ -1,0 +1,41 @@
+YOUTUBE MASTERY ACADEMY — VISITOR ANALYTICS BUNDLE
+
+IMPORTANT: The GitHub connection currently has read-only access, so these files were prepared for manual upload. They have NOT been pushed to your repository yet.
+
+FILES TO UPLOAD/REPLACE IN YOUR EXISTING GitHub repository (main branch):
+1. ADD new file: visitor-tracking.js
+2. ADD new file: visitor-analytics.sql (keep this in the repository for your setup reference; it is run in Supabase, not by GitHub Pages)
+3. REPLACE existing file: dashboard.html
+4. REPLACE existing file: dashboard.js
+5. REPLACE existing file: auth.css (this bundle contains the existing styles plus analytics styles)
+
+6. UPDATE existing app.js: keep its current contents and append these lines at the very end:
+
+(function(){
+  function loadTracker(){
+    var s=document.createElement('script');
+    s.src='visitor-tracking.js';
+    s.defer=true;
+    document.body.appendChild(s);
+  }
+  if(window.supabase && window.supabase.createClient){loadTracker();}
+  else {
+    var cdn=document.createElement('script');
+    cdn.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    cdn.onload=loadTracker;
+    document.head.appendChild(cdn);
+  }
+})();
+
+This loads visitor tracking on public pages that already include app.js: index.html, courses.html, categories.html, classes.html and admission.html.
+The replacement dashboard.html already loads visitor-tracking.js. To track login and password-reset page visits too, add <script src="visitor-tracking.js" defer></script> after the Supabase CDN script in login.html and reset-password.html.
+
+AFTER uploading the files:
+A. Open Supabase → SQL Editor → New query.
+B. Open visitor-analytics.sql from this bundle, copy all SQL, paste it into Supabase SQL Editor and click Run.
+C. Confirm the owner account already has role='admin' in public.profiles. Only admin accounts can read analytics.
+D. Open the deployed site, visit several pages, then sign in with the admin account and open dashboard.html.
+
+Privacy notes: anonymous visitors are represented by a random browser ID stored in localStorage. The tracker records page path/title, referring origin+path, device category, event time, and the signed-in Supabase user ID when a visitor is logged in. It does not collect IP addresses, precise location, passwords, or email addresses. Add an appropriate privacy notice to your website.
+
+If SQL reports that public.is_admin() does not exist, stop and send the error screenshot; do not remove the admin check from the analytics function.
